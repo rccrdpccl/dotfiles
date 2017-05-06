@@ -1,0 +1,8 @@
+[user]
+	name = Riccardo Piccoli
+	email = riccardo.piccoli@softonic.com
+[push]
+	default = simple
+[core]
+	editor = emacs
+	excludesfile = ~/.gitignore_global
