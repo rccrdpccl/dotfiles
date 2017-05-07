@@ -1,4 +1,31 @@
-#!/bin/bash
+#!/bin/bash -e
+
+function install_puppet() {
+    printf "Installing puppet..."
+    curl -sS http://apt.puppetlabs.com/puppetlabs-release-jessie.deb > $TMPDIR/puppetlabs-release-jessie.deb
+    sudo dpkg -i $TMPDIR/puppetlabs-release-jessie.deb
+    sudo apt-get update
+    sudo apt-get install -y puppet
+    cp /etc/puppet/puppet.conf $TMPDIR/puppet.conf
+    echo '[main]
+logdir=/var/log/puppet
+vardir=/var/lib/puppet
+ssldir=/var/lib/puppet/ssl
+rundir=/var/run/puppet
+factpath=$confdir/facter
+' | sudo tee /etc/puppet/puppet.conf
+
+}
+
+install_puppet_modules() {
+    sudo puppet module install puppetlabs-apt --version 2.4.0
+    sudo puppet module install garethr-docker
+    sudo puppet module install puppetlabs-git
+}
+
+apply() {
+    sudo puppet apply --verbose --test .puppet/manifests/base.pp
+}
 
 zsh=$(which zsh)
 if [[ "$SHELL" != "$zsh" ]]; then
@@ -6,8 +33,8 @@ if [[ "$SHELL" != "$zsh" ]]; then
    chsh -s "$zsh"
 fi
 
-sudo apt-get install -y \
-     git \
-     chromium \
-     tree
+command_exists puppet || install_puppet
 
+install_puppet_modules
+
+apply
