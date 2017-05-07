@@ -1,0 +1,9 @@
+
+antigen use oh-my-zsh
+
+antigen theme https://gist.github.com/f1929ee2cfe4e5dea31c79b27de07a82.git essential
+
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
+
+antigen apply
