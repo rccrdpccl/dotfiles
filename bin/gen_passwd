@@ -1,0 +1,8 @@
+#!/bin/bash
+
+function gen_passwd() {
+    local length=$1
+    tr -cd '[:alnum:]' < /dev/urandom | fold -w$length | head -n1
+}
+
+gen_passwd $@

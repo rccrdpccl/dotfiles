@@ -9,6 +9,9 @@ else
     printf " done.\n"
 fi
 
+mkdir -p $HOME/bin/
+export PATH="${PATH}:$HOME/bin"
+
 export TERM="xterm-256color"
 
 antigen init .antigenrc
