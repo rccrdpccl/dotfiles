@@ -1,8 +1,8 @@
 ;; To launch Emacs with another .emacs than the $HOME one :
 ;; emacs -q(--no-init-file) -l .emacs_to_load
 ; remove clutter
-(menu-bar-mode nil)
-(tool-bar-mode nil)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
 
 ; set theme
 (custom-set-variables
