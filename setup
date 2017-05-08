@@ -1,5 +1,20 @@
 #!/bin/bash -e
 
+dry_run=0;
+debug=0;
+while getopts ":t:d" opt; do
+    case $opt in
+        t)
+            dry_run=1;
+            ;;
+        d)
+            debug=1;
+            ;;
+        \?)
+            ;;
+    esac
+done
+
 function install_puppet() {
     printf "Installing puppet..."
     curl -sS http://apt.puppetlabs.com/puppetlabs-release-jessie.deb > $TMPDIR/puppetlabs-release-jessie.deb
@@ -24,7 +39,16 @@ install_puppet_modules() {
 }
 
 apply() {
-    sudo puppet apply --verbose --test .puppet/manifests/base.pp
+    flags="--verbose"
+    if [[ $dry_run -eq 1 ]]; then
+        flags="${flags} --test"
+    fi
+    if [[ $debug -eq 1 ]]; then
+        flags="${flags} --debug"
+    fi
+    set -x
+    sudo puppet apply ${flags} "$1"
+    set +x
 }
 
 zsh=$(which zsh)
@@ -37,4 +61,4 @@ command_exists puppet || install_puppet
 
 install_puppet_modules
 
-apply
+apply ".puppet/manifests/base.pp"

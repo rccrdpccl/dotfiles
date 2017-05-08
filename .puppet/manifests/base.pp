@@ -9,3 +9,13 @@ ExecStart=/usr/bin/docker daemon --storage-driver=overlay2',
 
 $packages = [ 'tree', 'chromium', 'httpie' ]
 package { $packages: ensure => 'installed' }
+
+package { 'awscli':
+  ensure  => 'installed',
+  provider => 'pip',              
+}
+
+class {'docker::compose': 
+  ensure => present,
+}
+
