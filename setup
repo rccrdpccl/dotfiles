@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+if [[ -z "$TMPDIR" ]]; then
+    TMPDIR="/tmp"
+fi
+
 dry_run=0;
 debug=0;
 while getopts ":t:d" opt; do
@@ -36,6 +40,7 @@ install_puppet_modules() {
     sudo puppet module install puppetlabs-apt --version 2.4.0
     sudo puppet module install garethr-docker
     sudo puppet module install puppetlabs-git
+    sudo puppet module install maestrodev/wget
 }
 
 apply() {
@@ -46,9 +51,8 @@ apply() {
     if [[ $debug -eq 1 ]]; then
         flags="${flags} --debug"
     fi
-    set -x
+
     sudo puppet apply ${flags} "$1"
-    set +x
 }
 
 zsh=$(which zsh)
