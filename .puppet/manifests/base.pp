@@ -1,15 +1,18 @@
-include 'docker'
 
 include 'git'
 
 include 'wget'
 
-file { '/etc/systemd/system/docker.service':
-  content => '[Service]
-ExecStart=/usr/bin/docker daemon --storage-driver=overlay2',
+class { 'docker':
+  storage_driver => 'overlay2',
 }
 
-$packages = [ 'tree', 'chromium', 'httpie', 'openvpn', 'python-pip', 'network-manager-openvpn-gnome', 'zbar-tools' ]
+user { 'riccardo.piccoli':
+  ensure => 'present',
+  groups => 'docker',
+}
+
+$packages = [ 'tree', 'chromium', 'httpie', 'openvpn', 'python-pip', 'network-manager-openvpn-gnome', 'zbar-tools', 'php-elisp', 'openconnect', 'network-manager-openconnect-gnome', 'siege' ]
 package { $packages: ensure => 'installed' }
 
 $slack_dependencies = [ 'libappindicator1', 'libdbusmenu-glib4', 'libdbusmenu-gtk4', 'libindicator7' ]
