@@ -10,7 +10,7 @@ else
 fi
 
 mkdir -p $HOME/bin/
-export PATH="${PATH}:$HOME/bin"
+export PATH="${PATH}:$HOME/bin:$HOME/.local/bin"
 
 export TERM="xterm-256color"
 
